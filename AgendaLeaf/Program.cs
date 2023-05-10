@@ -1,7 +1,23 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using AgendaLeaf.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// SQLServer Connection
+var connectionString = builder.Configuration.GetConnectionString("AgendaLeafConnectionString");
+builder.Services.AddDbContext<AgendaLeafContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Auth
+builder.Services.AddAuthentication(
+    CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option => {
+        option.LoginPath = "/Access/Login";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
 
 var app = builder.Build();
 
@@ -18,10 +34,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Auth
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Access}/{action=Login}/{id?}");
 
 app.Run();

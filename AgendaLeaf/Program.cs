@@ -1,3 +1,4 @@
+//By Leonardo Motta de Oliviera -> mail: leonardomotta@ucl.br
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using AgendaLeaf.Data;

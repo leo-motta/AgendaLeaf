@@ -34,9 +34,12 @@
                 </select>
                 <span asp-validation-for="Event.Type" class="text-danger"></span>
             </div>
-            <input type="hidden" for="Event.OwnerId" class="form-control" value="@ViewBag.OwnerId" placeholder="@ViewBag.OwnerId" />
             <div class="form-group mb-3">
-                <label asp-for="UsersId" class="control-label"></label>
+                <label asp-for="Event.OwnerId" class="control-label"></label>
+                <input type="hidden" asp-for="Event.OwnerId" class="form-control" value="@ViewBag.OwnerId" placeholder="@ViewBag.OwnerId" />
+            </div>
+            
+            <div class="form-group mb-3">
                 <select asp-for="UsersId" class="form-control" asp-items="@ViewBag.Users" multiple></select>
             </div>
             <div class="form-group mb-3">

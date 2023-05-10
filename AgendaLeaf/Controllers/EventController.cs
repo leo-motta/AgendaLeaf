@@ -137,5 +137,47 @@ namespace AgendaLeaf.Controllers
             ViewData["ErrorMessage"] = "Erro";
             return View();
         }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var idClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.UserData);
+            if (idClaim != null)
+            {
+                ViewBag.OwnerId = idClaim.Value.ToString().ToUpper();
+                ViewBag.Users = new MultiSelectList(_context.Users, "Id", "Name");
+            }
+
+            //System.Diagnostics.Debug.WriteLine($"EventId:{id}\n\n");
+            var EventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+            if (EventObj != null)
+            {
+                List<Guid> userIds = await _context.Users.Select(u => u.Id).ToListAsync();
+                EventViewModel viewModel = new EventViewModel { Event = EventObj, UsersId = userIds };
+                return View(viewModel);
+            }
+            ViewData["ErrorMessage"] = "Erro";
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid? Id)
+        {
+            System.Diagnostics.Debug.WriteLine($"Delete: {Id}");
+            try
+            {
+                var EventObj = await _context.Events.FirstOrDefaultAsync(e => e.Id == Id);
+                if (EventObj != null)
+                {
+                    _context.Events.Remove(EventObj);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception e)
+            {
+                ViewData["ErrorMessage"] = "Erro ao deletar";
+            }
+            return View();
+        }
     }
 }

@@ -3,13 +3,14 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Criar Evento</h1>
+<h1>Editar Evento</h1>
 
 <h4>Evento</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Event.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Event.Name" class="control-label"></label>
@@ -34,13 +35,13 @@
                 </select>
                 <span asp-validation-for="Event.Type" class="text-danger"></span>
             </div>
-            <input type="hidden" for="Event.OwnerId" class="form-control" value="@ViewBag.OwnerId" placeholder="@ViewBag.OwnerId" />
+            <input type="hidden" asp-for="Event.OwnerId" class="form-control" value="@ViewBag.OwnerId" placeholder="@ViewBag.OwnerId" />
             <div class="form-group mb-3">
                 <label asp-for="UsersId" class="control-label"></label>
                 <select asp-for="UsersId" class="form-control" asp-items="@ViewBag.Users" multiple></select>
             </div>
             <div class="form-group mb-3">
-                <input type="submit" value="Create" class="btn btn-dark" />
+                <input type="submit" value="Salvar" class="btn btn-dark" />
             </div>
         </form>
         @if (ViewData["ErrorMessage"] != null)
@@ -55,3 +56,9 @@
 <div>
     <a asp-controller="Home" asp-action="Index">Voltar a tela principal</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

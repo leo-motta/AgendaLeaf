@@ -31,13 +31,12 @@ namespace AgendaLeaf.Controllers
         {
             var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == agendaLogin.Email);
 
-
             if (currentUser != null && agendaLogin.Password == currentUser.Password)
             {
                 List<Claim> claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, agendaLogin.Email),
-                    new Claim("OtherProperties", "Example Role")
+                    new Claim(ClaimTypes.UserData, currentUser.Id.ToString())
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,

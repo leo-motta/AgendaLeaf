@@ -10,6 +10,5 @@
         public Guid OwnerId { get; set; }
         public User Owner { get; set; }
         public ICollection<EventParticipant> Participants { get; set; }
-
     }
 }

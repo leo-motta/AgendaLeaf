@@ -1,26 +1,40 @@
-﻿@using System.Security.Claims;
+﻿@model IEnumerable<AgendaLeaf.Models.Event>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    @if (User.Identity.IsAuthenticated)
-    {
-        var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        if (emailClaim != null)
-        {
-            <p>Your email address is: @emailClaim.Value</p>
-        }
-        else
-        {
-            <p>The email claim is missing.</p>
-        }
-    }
-    else
-    {
-        <p>You are not authenticated.</p>
-    }
+    <h1 class="display-4 mb-6">Bem Vindo a Agenda Leaf</h1>
 
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <hr />
+
+    <h3 class="display-6 mb-3">Eventos do Usuário: @ViewBag.email</h3>
+
+    <table class="table table-striped table-hover">
+    <thead>
+        <tr class="danger">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td><a asp-controller="Event" asp-action="Edit" asp-route-id="@item.Id">Editar</a></td>
+                <td><a asp-controller="Event" asp-action="Delete" asp-route-id="@item.Id">Deletar</a></td>
+            </tr>
+        }
+    </tbody>
+    </table>
+
+    <p>
+        <a asp-controller="Event" asp-action="Create" class="btn btn-dark">Criar evento</a>
+    </p>
 </div>
